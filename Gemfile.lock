@@ -5,6 +5,10 @@ GEM
 
 PLATFORMS
   ruby
+  x64-mingw32
 
 DEPENDENCIES
   asciidoctor
+
+BUNDLED WITH
+   1.17.2

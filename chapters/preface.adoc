@@ -1,21 +1,22 @@
-Preface
+Pendahuluan
 -------
 
-Writing a book these days means, inexorably, offering an electronic
-version to your readers.
+Selamat datang di Buku Saku Android. Buku ini disusun untuk membantu programmer Android pemula yang menggunakan Android Studio untuk mengulang teori penggunaan komponen-komponen Android. Kode-kode yang disampaikan di buku ini juga diharapkan bisa dengan mudah di _copy-paste_ dalam proses pembuatan aplikasi Android. 
 
-Over the past few years, I've been trying most typesettings systems out
-there, from LaTeX to Pandoc and, finally, Asciidoc, which is the one
-I've finally chosen to standardize my documents. It turns out I'm not
-the only one, as many large book publishers use Asciidoc these days to
-produce their titles.
+Tidak berurutan
 
-This template provides a simple starting point for companies and
-individuals to create an eBook. Please follow the instructions in the
-README.md file to install the required software.
+Topik-topik yang dibahas dibuku ini saling berdiri sendiri dan dibuat untuk tidak bergantung pada topik-topik sebelumnya. Jika komponen A yang sedang dibahas memakai komponen B, maka penjelasan komponen B hanya sebatas untuk mendukung penjelasan komponen A. Oleh karena itu buku ini tidak mesti dibaca dari halaman 1 sampai halaman terakhir. Silahkan lompat dari bab yang satu ke bab yang lainnya sesuai dengan kebutuhan. 
 
-I look forward to read your next bestseller in as many platforms as
-possible!
+Lisensi
 
-Yolo, January 2015.
+Buku ini dipublikasikan dengan lisensi http://creativecommons.org/licenses/by-nc-sa/4.0/[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)]. Artinya, buku ini boleh didistribusikan dan dimodifikasi untuk tujuan non komersial selama memberikan atribusi/kredit. 
 
+Sementara itu, untuk _source code_ contoh yang ada di buku ini boleh dipakai untuk pengguna pribadi maupun komersial, boleh didistribusikan serta dimodifikasi sesuai kebutuhan demi kemaslahatan umat manusia. Akan tetapi, tidak ada garansi apapun yang diberikan untuk setiap _source code_ yang ditampilkan di dalam buku ini maupun yang disimpan di repositori terpisah (https://github.com/lobothijau/bukusakuandroid-code). Segala kerusakan yang terjadi akibat _copy-paste source code_ yang tersedia diluar tanggung jawab penulis. Namun, penulis tetap berharap pembaca dapat memberikan umpan balik apabila terdapat kesalahan penjelasan maupun kesalahan kode sehingga bisa diperbaiki dan bisa membantu lebih banyak orang. 
+
+Kontak
+
+Jika pembaca menemukan menemukan kesalahan sekecil apapun, memiliki pertanyaan, atau memiliki permintaan topik yang ingin dibahas (meskipun belum tentu langsung dikabulkan), silahkan mention https://twitter.com/lobothijau[@lobothijau] atau kirimkan email ke mailto:lobothijau@gmail.com[lobothijau@gmail.com].
+
+Unduh PDF
+
+Versi PDF terakhir buku ini bisa di unduh di https://github.com/lobothijau/bukusakuandroid. 

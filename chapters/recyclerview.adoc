@@ -1,0 +1,715 @@
+=== RecyclerView
+
+RecyclerView merupakan komponen Android yang didesain untuk dapat menampilkan kumpulan data dengan performa yang lebih efisien dibandingkan ListView/GridView. 
+
+=== Membuat RecyclerView sederhana
+
+Contoh aplikasi RecyclerView ini menggunakan template *Basic Activity*. 
+
+==== Menambahkan dependensi
+
+Buka file `build.gradle` modul app lalu tambahkan dependensi RecyclerView di blok `dependencies`. 
+
+[source,groovy]
+----
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.android.support:design:28.0.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'com.android.support:recyclerview-v7:28.0.0' // <1>
+    implementation 'com.squareup.picasso:picasso:2.71828' // <2>
+}
+----
+
+<1> Pastikan nomor versi sama dengan `appcompat-v7`
+<2> Library Picasso dipakai untuk menampilkan gambar dari sebuah URL
+
+==== Menambahkan komponen RecyclerView di layout
+
+Tambahkan komponen RecyclerView ke dalam layout Activity atau Fragment di mana kita ingin menampilkannya. Karena contoh ini menggunakan Basic Activity, maka tambahkan komponen RecyclerView di file `content_main.xml`. 
+
+[source,xml]
+----
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recyclerView" />
+
+</android.support.constraint.ConstraintLayout>
+----
+
+==== Menambahkan layout item RecyclerView
+
+Selanjutnya buat file baru sebagai layout item-item yang akan ditampilkan di dalam RecyclerView. Klik kanan di foler *res>layout>New>Layout resource file*. Beri nama `country.xml`.
+
+image::chapters/images/recyclerview/1.png[]
+
+Kemudian isi dengan kode berikut:
+
+[source,xml]
+----
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/country_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/indonesia"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/country_capital_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        tools:text="Jakarta"
+        style="@style/TextAppearance.AppCompat.Title"
+        app:layout_constraintBottom_toBottomOf="@+id/country_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/country_image"
+        app:layout_constraintTop_toTopOf="@+id/country_image" />
+
+</android.support.constraint.ConstraintLayout>
+----
+
+image::chapters/images/recyclerview/2.png[]
+
+Bendera Indonesia bisa kamu unduh di http://flags.fmcdn.net/data/flags/w580/id.png. Simpan di folder *res>drawable* dengan nama indonesia.png.
+
+==== Membuat kelas model (POJO)
+
+Setelah kita mendesain layout untuk item di dalam RecyclerView, kita perlu membuat sebuah kelas yang merepresentasikan sebuah data. Kumpulan data inilah yang akan ditampilkan oleh si RecyclerView. 
+
+Buat file Java baru dan beri nama `Country.java`.
+
+[source,java]
+----
+public class Country {
+    String name, image;
+
+    public Country() {
+
+    }
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+}
+----
+
+[NOTE]
+.Tentang pembuatan kelas model (POJO)
+=====================================================================
+Setiap membuat kelas model, cukup tuliskan field-nya saja (dalam model di atas adalah `String name, image`). Untuk kode sisanya lakukan secara otomatis lewat menu *Generate>Constructor>Select None* dan *Generate>Getter and Setter*. Menu *Generate* bisa dilihat dengan klik kanan atau ALT+INSERT.
+=====================================================================
+
+==== Membuat Adapter RecyclerView
+
+Selanjutnya, buat sebuah kelas Java baru dan beri nama `CountryListAdapter` yang meng-extends `RecyclerView.Adapter`. 
+
+[source,java]
+----
+
+public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.CountryViewHolder> {
+}
+
+----
+
+==== Membuat ViewHolder
+
+Setelah itu, buat kelas CountryViewHolder di dalam kelas CountryListAdapter (`CountryListAdapter.CountryViewHolder` maksudnya kita memanggil kelas CountryViewHolder yang berada di dalam `CountryListAdapter`).
+
+[source,java]
+----
+public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.CountryViewHolder> {
+
+    class CountryViewHolder extends RecyclerView.ViewHolder {
+        ImageView countryImageView; // <1>
+        TextView capitalTextView; // <2>
+        
+        public CountryViewHolder(@NonNull View itemView) {
+            super(itemView);
+            
+            countryImageView = itemView.findViewById(R.id.country_image); // <1>
+            capitalTextView = itemView.findViewById(R.id.country_capital_text); // <2>
+        }
+    }
+
+}
+
+----
+
+<1> Deklarasi objek ImageView yang ada di `country.xml`
+<2> Deklarasi objek TextView yang ada di `country.xml`
+
+[NOTE]
+.Selesaikan dulu ViewHolder
+=====================================================================
+Untuk mempermudah proses pembuatan adapter RecyclerView, biasakan untuk
+menyelesaikan ViewHolder sebelum melanjutkan ke tahap berikutnya. 
+Menyelesaikan ViewHolder akan sangat membantu proses sesudahnya.
+=====================================================================
+
+==== Membuat list item
+
+Sebuah adapter perlu memiliki list yang berisi kumpulan data yang ingin ditampilkan. Mari kita deklarasi objek list tersebut. 
+
+[source,java]
+----
+public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.CountryViewHolder> {
+    
+    List<Country> countries = new ArrayList<>(); // <1>
+
+    public void setCountries(List<Country> countries) { // <2>
+        this.countries = countries;
+    }
+    
+    // ... kode lain disembunyikan
+}
+----
+
+<1> Deklarasi objek list item Country
+<2> Method ini berfungsi untuk mengisi list `countries` dari luar kelas CountryListAdapter
+
+
+==== Implementasi method wajib RecyclerView.Adapter
+
+Sebuah kelas yang meng-extends  RecyclerView.Adapter wajib memiliki tiga method `getItemCount`, `onCreateViewHolder`, dan `onBindViewHolder`. Tiga method ini bisa ditulis secara otomatis menggunakan auto complete milik Android Studio. Klik di baris deklarasi kelas `CountryListAdapter` lalu tekan tombol ALT+ENTER di keyboard untuk menampilkan kotak dialog berikut. 
+
+image::chapters/images/recyclerview/3.png[]
+
+Pilih *Implement methods*. Akan muncul sebuah kotak dialog baru. Pilih ketiga method yang ada dan klik *OK*.
+
+image::chapters/images/recyclerview/4.png[]
+
+Sekarang kelas `CountryListAdapter` menjadi:
+
+[source,java]
+----
+
+public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.CountryViewHolder> {
+
+    List<Country> countries = new ArrayList<>();
+
+    public void setCountries(List<Country> countries) {
+        this.countries = countries;
+    }
+
+    @NonNull
+    @Override
+    public CountryViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull CountryViewHolder countryViewHolder, int i) {
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return 0;
+    }
+
+    class CountryViewHolder extends RecyclerView.ViewHolder {
+        ImageView countryImageView;
+        TextView capitalTextView;
+
+        public CountryViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            countryImageView = itemView.findViewById(R.id.country_image);
+            capitalTextView = itemView.findViewById(R.id.country_capital_text);
+        }
+    }
+
+}
+----
+
+===== Implementasi getItemCount
+
+Method getItemCount akan mengembalikan jumlah data yang akan ditampilkan di RecyclerView. Untuk lebih amannya, kita akan mengambil jumlah data yang terdapat di dalam objek `countries` secara otomatis. Setial objek `List` memiliki method `size` yang bisa menghitung jumlah datanya secara otomatis. 
+
+[source,java]
+----
+@Override
+public int getItemCount() {
+    return countries.size();
+}
+----
+
+===== Implementasi onCreateViewHolder
+
+Method onCreateViewHolder berfungsi untuk membuat objek view dengan membaca layout `country.xml` yang kemudian bisa dipakai dalam proses inisiasi (`findViewById`) yang ada di dalam CountryViewHolder. 
+
+[source,java]
+----
+@NonNull
+@Override
+public CountryViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.country, viewGroup, false);
+    return new CountryViewHolder(view);
+}
+----
+
+===== Implementasi onBindViewHolder
+
+Method onBindViewHolder akan dipanggil sebanyak jumlah data yang terdapat di dalam list `countries`. Method ini memiliki parameter bernama `i` (di beberapa versi Android Studio diberi nama `posisition` dan sesungguhnya boleh memiliki nama apapun, bahkan bisa diganti). Parameter `i` akan bernilai 0 hingga jumlah yang dikembalikan oleh method `getItemCount` yang dalam kasus ini merupakan jumlah list `countries`. Parameter tersebut bisa dimanfaatkan untuk mengambil isi list `countries` satu persatu bersadarkan nomor elemennya. 
+
+Setiap objek yang diambil dari dalam list kemudian bisa dipakai untuk mengisi layout `country.xml` berdasarkan isi masing-masing data. 
+
+[source,java]
+----
+@Override
+public void onBindViewHolder(@NonNull CountryViewHolder countryViewHolder, int i) {
+    Country country = countries.get(i); // <1>
+
+    countryViewHolder.capitalTextView.setText(country.getName()); // <2>
+    Picasso.get().load(country.getImage()).into(countryViewHolder.countryImageView); // <3>
+}
+----
+<1> Ambil salah satu dari dari dalam list berdasarkan posisi
+<2> Mengisi nama salah satu data ke item layout
+<3> Menampilkan gambar dari URL menggunakan Picasso. 
+
+Pengisian data negara akan kita lakukan di tahap selanjutnya. 
+
+==== Inisialisasi RecyclerView, Adapter, dan data
+
+Setelah selesai membuat adapter, sekarang mari lakukan inisialisasi data, Adapter, dan RecyclerView-nya. Deklarasikan tiga objek untuk RecyclerView, CountryListAdapter dan List<Country> seperti berikut ini. 
+
+[source,java]
+----
+public class MainActivity extends AppCompatActivity {
+
+    RecyclerView recyclerView;
+    CountryListAdapter adapter;
+
+    List<Country> countryList = new ArrayList<>();
+    
+    // ... kode lain di sembunyikan
+}
+----
+
+Setelah melakukan deklarasi tiga objek di atas, buat sebuah method baru bernama `insertDummyData` untuk menambahkan data ke `countryList`. 
+
+[source,java]
+----
+private void insertDummyData() {
+    Country indonesia = new Country();
+    indonesia.setName("Indonesia");
+    indonesia.setImage("http://flags.fmcdn.net/data/flags/w580/id.png");
+    countryList.add(indonesia);
+
+    Country italy = new Country();
+    italy.setName("Italy");
+    italy.setImage("http://flags.fmcdn.net/data/flags/w580/it.png");
+    countryList.add(italy);
+
+    Country japan = new Country();
+    japan.setName("Japan");
+    japan.setImage("http://flags.fmcdn.net/data/flags/w580/jp.png");
+    countryList.add(japan);
+}
+----
+
+Berikutnya, lakukan inisialisasi RecyclerView dan Adapter. 
+
+[source,java]
+----
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    setSupportActionBar(toolbar);
+
+    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+    fab.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
+    });
+
+    recyclerView = findViewById(R.id.recyclerView); // <1>
+    adapter = new CountryListAdapter(); // <2>
+    recyclerView.setAdapter(adapter); // <3>
+    recyclerView.setLayoutManager(new LinearLayoutManager(this)); // <4>
+
+    insertDummyData(); // <5>
+
+    adapter.setCountries(countryList); // <6>
+    adapter.notifyDataSetChanged(); // <7>
+}
+----
+
+<1> Inisialisasi RecyclerView, R.id.recyclerView adalah id komponen RecyclerView di `content_main.xml`
+<2> Inisialisasi objek adapter
+<3> Memasangkan RecyclerView dengan sebuah Adapter. RecyclerView sesungguhnya adalah _dumb view_. Ia tidak tahu apa-apa atas data yang ia tampilkan, semua itu diatur oleh sebuah Adapter. 
+<4> Mengatur bagaimana item-item di dalam RecyclerView, apakah berbentuk list, grid, atau staggered grid. LayoutManager akan di bahas di subbab mendatang.
+<5> Mengisi objek `countryList`
+<6> Menyalin isi `countryList` di MainActivity ke dalam `countries` di `CountryListAdapter`.
+<7> Memberitahu adapter bahwa ada perubahan data sehingga ia harus merefresh datanya. 
+
+Pada contoh di atas, kita memanggil `notifyDataSetChanged` dari luar Adapter. Kita juga bisa memanggil notifyDataSetChanged dari dalam Adapter. Perhatikan kode berikut:
+
+[source,java]
+----
+// di dalam CountryListAdapter
+public void setCountries(List<Country> countries) {
+    this.countries = countries;
+    notifyDataSetChanged();
+}
+
+// di dalam MainActivity tidak perlu memanggil adapter.notifyDataSetChanged 
+// karena sudah dipanggil langsung saat mengirimkan data lewat
+// setCountries
+adapter.setCountries(countryList); 
+----
+
+Kamu bebas untuk menggunakan cara yang pertama atau cara yang kedua, hasilnya sama saja. Selalu pilih cara yang menurutmu paling mudah dan bisa menyelesaikan permasalahan. 
+
+Jalankan aplikasi di emulator atau perangakt asli untuk melihat hasilnya. 
+
+image::chapters/images/recyclerview/5.png[]
+
+Jika gambar tidak muncul, tambahkan permission INTERNET di AndroidManifest.xml
+
+[source,xml]
+----
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="id.droidindonesia.recyclerview">
+    
+    // tambahkan baris berikut
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
+----
+
+==== OnClickListener dari dalam adapter
+
+Seringkali ketika pengguna menyentuh salah satu item kita ingin melakukan suatu operasi. Misalnya membuat halaman baru untuk menampilkan detail, mengubah warna latar belakang, dsb. Cara paling mudah dan paling cepat untuk mengimplementasi ialah dengan membuat OnClickListener dari dalam adapter. 
+
+[source,java]
+----
+@Override
+public void onBindViewHolder(@NonNull CountryViewHolder countryViewHolder, int i) {
+    Country country = countries.get(i);
+
+    countryViewHolder.capitalTextView.setText(country.getName());
+    Picasso.get().load(country.getImage()).into(countryViewHolder.countryImageView);
+
+    // <1>
+    countryViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // lakukan sesuatu di sini
+        }
+    });
+    // <2>
+    countryViewHolder.capitalTextView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // lakukan sesuatu di sini
+        }
+    });
+    // <3>
+    countryViewHolder.countryImageView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // lakukan sesuatu di sini
+        }
+    });
+}
+----
+
+<1> Deteksi klik dibagian manapun di dalam layout country.xml
+<2> Deteksi klik hanya di teks nama negara
+<3> Deteksi klik hanya di bagian gambar
+
+==== OnClickListener dari luar adapter
+
+Ada kalanya kita ingin mendeteksi klik dari luar adapter. Jika ingin mendeteksi klik di luar adapter, maka pertama buat dulu sebuah interface sebagai berikut.  
+
+[source,java]
+----
+interface OnClickListener {
+    public void onItemClick(int position, Country country);
+}
+----
+
+Interface ini boleh disimpan di file terpisah atau disimpan di dalam kelas adapter. Penulis lebih sering menyimpannya di dalam kelas adapter langsung kecuali ia akan dipakai di lebih dari satu adapter. Saat dipakai oleh dari satu adapter baru akan penulis keluarkan ke file terpisah. 
+
+Berikutnya buat sebuah objek baru dari `OnClickListener` dan sebuah contructor untuk menginisialisasikannya. 
+
+[source,java]
+----
+public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.CountryViewHolder> {
+
+    List<Country> countries = new ArrayList<>();
+    OnClickListener listener;
+
+    public CountryListAdapter(OnClickListener listener) {
+        this.listener = listener;
+    }
+
+    interface OnClickListener {
+        void onItemClick(int position, Country country);
+        void onCapitalTextClick(int position, Country country);
+        void onImageClick(int position, Country country);
+    }
+    
+    // ... kode lain disembunyikan
+}
+----
+
+Berikutnya kita perbarui method `onBindViewHolder` menjadi:
+
+[source,java]
+----
+@Override
+public void onBindViewHolder(@NonNull CountryViewHolder countryViewHolder, final int i) {
+    final Country country = countries.get(i);
+
+    countryViewHolder.capitalTextView.setText(country.getName());
+    Picasso.get().load(country.getImage()).into(countryViewHolder.countryImageView);
+
+    countryViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            listener.onItemClick(i, country);  // <1>
+        }
+    });
+
+    countryViewHolder.capitalTextView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            listener.onCapitalTextClick(i, country); // <2>
+        }
+    });
+
+    countryViewHolder.countryImageView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            listener.onImageClick(i, country); // <3>
+        }
+    });
+}
+----
+
+Sekarang kembali ke Activity atau Fragment dimana kita memanggil CountryListAdapter. Kelas Activity atau Fragment tersebut harus meng-implement interface OnClickListener yang ada di CountryListAdapter sebagai berikut:
+
+[source,java]
+----
+public class MainActivity extends AppCompatActivity implements CountryListAdapter.OnClickListener {
+}
+----
+
+Karena kita menambahkan baris `implements CountryListAdapter.OnClickListener` maka di dalam kelas ini kita harus mengimplementasi method-method yang didefinisikan di dalam OnClickLister tadi. Implementasi method yang ada di dalam interface OnClickListener bisa dilakukan dengan ALT+ENTER lalu *Implement methods* atau menuliskannya langsung seperti berikut:
+
+[source,java]
+----
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+    // Inflate the menu; this adds items to the action bar if it is present.
+    getMenuInflater().inflate(R.menu.menu_main, menu);
+    return true;
+}
+
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+    // Handle action bar item clicks here. The action bar will
+    // automatically handle clicks on the Home/Up button, so long
+    // as you specify a parent activity in AndroidManifest.xml.
+    int id = item.getItemId();
+
+    //noinspection SimplifiableIfStatement
+    if (id == R.id.action_settings) {
+        return true;
+    }
+
+    return super.onOptionsItemSelected(item);
+}
+
+// <1>
+@Override
+public void onItemClick(int position, Country country) {
+    // lakukan sesuatu saat item di klik
+}
+// <2>
+@Override
+public void onCapitalTextClick(int position, Country country) {
+    // lakukan sesuatu saat teks nama di klik
+}
+// <3>
+@Override
+public void onImageClick(int position, Country country) {
+    // lakukan sesuatu saat gambar di klik
+}
+
+----
+
+Berikutnya, karena tadi kita membuat sebuah constructor yang menerima _instance_ kelas yang meng-implement `CountryListAdapter.OnClickListener`, maka kita perlu mengirimkan instance tersebut saat inisiasi objek adapter.
+
+[source,java]
+----
+recyclerView = findViewById(R.id.recyclerView);
+adapter = new CountryListAdapter(this); // <1>
+recyclerView.setAdapter(adapter);
+recyclerView.setLayoutManager(new LinearLayoutManager(this));
+----
+
+Hasil akhir kelas MainActivity menjadi:
+
+[source,java]
+----
+public class MainActivity extends AppCompatActivity implements CountryListAdapter.OnClickListener {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
+    RecyclerView recyclerView;
+    CountryListAdapter adapter;
+
+    List<Country> countryList = new ArrayList<>();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        recyclerView = findViewById(R.id.recyclerView);
+        adapter = new CountryListAdapter(this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        insertDummyData();
+
+        adapter.setCountries(countryList);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void insertDummyData() {
+        Country indonesia = new Country();
+        indonesia.setName("Indonesia");
+        indonesia.setImage("http://flags.fmcdn.net/data/flags/w580/id.png");
+        countryList.add(indonesia);
+
+        Country italy = new Country();
+        italy.setName("Italy");
+        italy.setImage("http://flags.fmcdn.net/data/flags/w580/it.png");
+        countryList.add(italy);
+
+        Country japan = new Country();
+        japan.setName("Japan");
+        japan.setImage("http://flags.fmcdn.net/data/flags/w580/jp.png");
+        countryList.add(japan);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(int position, Country country) {
+        // lakukan sesuatu saat item di klik
+        Log.d(TAG, "onItemClick");
+    }
+
+    @Override
+    public void onCapitalTextClick(int position, Country country) {
+        // lakukan sesuatu saat teks nama di klik
+    }
+
+    @Override
+    public void onImageClick(int position, Country country) {
+        // lakukan sesuatu saat gambar di klik
+    }
+}
+
+----

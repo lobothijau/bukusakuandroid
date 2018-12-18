@@ -1,15 +1,7 @@
-About the author
+Tentang penulis
 ----------------
 
-Vysakh Sreenivasan is a passionate developer.
+Bagus Aji Santoso adalah programmer yang baik hati. Alumni Departemen Pendidikan Ilmu Komputer, Universitas Pendidikan Indonesia. 
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-commodo consequat. Duis aute ((irure dolor)) in reprehenderit in
-voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-mollit anim id est laborum.
-
-His Twitter account http://twitter.com/vysakh0[@vysakh0].
-
+- https://bagus.me
+- https://twitter.com/lobothijau

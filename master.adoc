@@ -1,38 +1,25 @@
-= eBook Template
-:author: Vysakh Sreenivasan
-:email:  email@server.com
-:revnumber: 1.0
-:revdate:   January 1st, 2012
+= Buku Saku Android
+:author: Bagus Aji Santoso
+:email:  lobothijau@gmail.com
+:revnumber: 0.0.1
+:revdate:   18 Desember 2018
 :doctype: book
 :toc:
-:icons:
+:icons: font
 :data-uri:
-:lang: en
+:lang: id
 :language: javadocript
 
 [preface]
 include::chapters/about.adoc[]
-include::chapters/preface.adoc[]
 
-== Introduction
+== Pendahuluan
 
 include::chapters/introduction.adoc[]
 
-== First Part
+== RecyclerView
 
-include::chapters/chapter2.adoc[]
-
-== Second Part
-
-include::chapters/chapter3.adoc[]
-
-[colophon]
-include::chapters/colophon.adoc[]
-
-include::chapters/bibliography.adoc[]
-
-[appendix]
-include::chapters/appendix.adoc[]
+include::chapters/recyclerview.adoc[]
 
 ifdef::backend-docbook[]
 [index]

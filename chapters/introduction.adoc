@@ -1,71 +1,21 @@
-=== Chapter 1
+=== Pendahuluan
 
-((Lorem ipsum)) dolor sit amet, consectetur adipisicing elit, sed do
-eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-mollit anim id est laborum.
+Selamat membaca Buku Saku Android. Buku ini disusun untuk membantu programmer Android pemula untuk mengulang teori penggunaan komponen-komponen Android juga untuk programmer yang sudah tidak lagi pemula agar lebih mudah mencari potongan kode yang bisa di di _copy-paste_ dalam proses pembuatan aplikasi Android. 
 
-[quote, John Smith, Memories]
-Lorem ipsum dolor sit amet, ((consectetur)) adipisicing elit, sed do
-eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-mollit anim id est laborum.
+=== Tidak berurutan
 
+Topik-topik yang dibahas dibuku ini saling berdiri sendiri dan dibuat untuk tidak bergantung pada topik-topik sebelumnya. Jika komponen A yang sedang dibahas memakai komponen B, maka penjelasan komponen B hanya sebatas untuk mendukung penjelasan komponen A. Oleh karena itu buku ini tidak mesti dibaca dari halaman 1 sampai halaman terakhir. Silahkan lompat dari bab yang satu ke bab yang lainnya sesuai dengan kebutuhan. 
 
-=== Section Title
+=== Lisensi
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-veniam, quis nostrud ((exercitation ullamco)) laboris nisi ut aliquip ex
-ea commodo consequat. Duis aute irure dolor in reprehenderit in
-voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-mollit anim id est laborum.
+Buku ini dipublikasikan dengan lisensi http://creativecommons.org/licenses/by-nc-sa/4.0/[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)]. Artinya, buku ini boleh didistribusikan dan dimodifikasi untuk tujuan non komersial selama memberikan atribusi/kredit. 
 
-[source]
---------------------------------------
-var http = require("http"); // <1>
-var server = http.createServer(); // <2>
-server.listen(8888);
---------------------------------------
+Sementara itu, untuk _source code_ contoh yang ada di buku ini boleh dipakai untuk penggunaan pribadi maupun komersial, boleh juga didistribusikan serta dimodifikasi sesuai kebutuhan demi kemaslahatan umat manusia. Akan tetapi, tidak ada garansi apapun yang diberikan untuk setiap _source code_ yang ditampilkan di dalam buku ini maupun yang disimpan di repositori terpisah (https://github.com/lobothijau/bukusakuandroid-code). Segala kerusakan yang terjadi akibat _copy-paste source code_ yang tersedia diluar tanggung jawab penulis. Namun, penulis tetap berharap pembaca dapat memberikan umpan balik apabila terdapat kesalahan penjelasan maupun kesalahan kode sehingga bisa diperbaiki dan bisa membantu lebih banyak orang. 
 
-<1> Some note here about that line.
-<2> Another note about that other line.
+=== Kontak
 
-==== Subsection Title
+Jika pembaca menemukan menemukan kesalahan sekecil apapun, memiliki pertanyaan, atau memiliki permintaan topik yang ingin dibahas (meskipun belum tentu langsung dikabulkan), silahkan mention https://twitter.com/lobothijau[@lobothijau] atau kirimkan email ke lobothijau[at]gmail.com.
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-commodo consequat. Duis aute ((irure dolor)) in reprehenderit in
-voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-mollit anim id est laborum.
+=== Unduh PDF
 
-[NOTE]
-.Some note about what you are reading
-=====================================================================
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-mollit anim id est laborum.
-=====================================================================
-
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-mollit anim id est laborum.
-
-
+Versi PDF terakhir buku ini bisa di unduh di https://github.com/lobothijau/bukusakuandroid. 
