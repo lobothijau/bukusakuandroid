@@ -1,5 +1,3 @@
-=== Pendahuluan
-
 Selamat membaca Buku Saku Android. Buku ini disusun untuk membantu programmer Android pemula untuk mengulang teori penggunaan komponen-komponen Android juga untuk programmer yang sudah tidak lagi pemula agar lebih mudah mencari potongan kode yang bisa di di _copy-paste_ dalam proses pembuatan aplikasi Android. 
 
 === Tidak berurutan

@@ -1,5 +1,3 @@
-=== RecyclerView
-
 RecyclerView merupakan komponen Android yang didesain untuk dapat menampilkan kumpulan data dengan performa yang lebih efisien dibandingkan ListView/GridView. 
 
 === Membuat RecyclerView sederhana
