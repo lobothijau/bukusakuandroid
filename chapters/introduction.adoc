@@ -16,6 +16,10 @@ Sementara itu, untuk _source code_ contoh yang ada di buku ini boleh dipakai unt
 
 Jika pembaca menemukan menemukan kesalahan sekecil apapun, memiliki pertanyaan, atau memiliki permintaan topik yang ingin dibahas (meskipun belum tentu langsung dikabulkan), silahkan mention https://twitter.com/lobothijau[@lobothijau] atau kirimkan email ke lobothijau[at]gmail.com.
 
-=== Unduh PDF
+=== Versi PDF
 
-Versi PDF terakhir buku ini bisa di unduh di https://github.com/lobothijau/bukusakuandroid. 
+Versi PDF terakhir buku ini bisa di unduh di https://github.com/lobothijau/bukusakuandroid.
+
+=== Versi HTML
+
+Versi HTML terakhir buku ini bisa di baca di http://droidindonesia.id/bukusakuandroid/
