@@ -21,6 +21,10 @@ include::chapters/introduction.adoc[]
 
 include::chapters/recyclerview.adoc[]
 
+== Intent
+
+include::chapters/intent.adoc[]
+
 ifdef::backend-docbook[]
 [index]
 Index

@@ -1,0 +1,142 @@
+Intent adalah suatu mekanisme di dalam sistem Android untuk melakukan perpindahan antar Activity. Perpindahan tersebut bisa dilakukan dari dalam aplikasi yang sama (explicit intent) maupun dari aplikasi yang berbeda (implicit intent). 
+
+=== Membuat Splash Screen
+
+Unduh logo untuk splash screen https://bit.ly/2GBwK17[di sini] atau kamu bisa menggunakan logo sendiri. Simpan logo tadi di folder drawable.  
+
+Selanjutnya buatlah sebuah file Java baru, beri nama SplashActivity dan isikan menjadi:
+
+[source,java]
+----
+public class SplashActivity extends AppCompatActivity {
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+  }
+}
+----
+
+Karena Activity ini kita buat secara manual, maka kita juga perlu mendaftarkannya secara manual di AndroidManifest.xml.
+
+[source,java]
+----
+<activity
+    android:name=".MainActivity"
+    android:label="@string/app_name"
+    android:theme="@style/AppTheme.NoActionBar">
+</activity>
+<activity android:name=".SplashActivity">
+</activity> 
+----
+
+==== Mengubah Activity Launcher
+
+
+_By default_, setiap aplikasi Android baru akan membuat MainActivity sebagai launcher (kecuali jika namanya diganti saat awal membuat __project__). Karena sebuah splash screen akan selalu tampil pertama sebelum Activity yang lain, maka kita harus mengubah SplashActivity sebagai launcher. 
+
+[source,xml]
+----
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="id.droidindonesia.intent">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".SplashActivity">
+            // <1>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
+----
+
+<1> Pindahkan blok <intent-filter> dari MainActivity ke Splash Activity. 
+
+==== Membuat layout splash screen
+
+Saat aplikasi pertama kali dijalankan, ada sedikit delay sebelum Activity launcher sukses memanggil `onCreate`. Saat delay ini terjadi (meskipun hanya beberapa milisecond, namun tetap terlihat mata), biasanya Android akan menampilkan `windowBackground` yang umumnya berwarna putih atau hitam. Atribut `windowBackground` ini, bisa diganti dengan sebuah drawable sebagai layar splash screen. 
+
+Buka file *res/values/styles.xml* lalu tambahkan deklarasi theme baerikut:
+
+[source,java]
+----
+<resources>
+
+    // ... deklarasi theme lain disembunyikan
+    
+    <style name="AppTheme.Splash" parent="AppTheme.NoActionBar">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    </style>
+</resources>
+
+----
+
+Kita belum memiliki file `launch_screen`. Buat file ini di dalam folder drawable, lalu isikan dengan:
+
+[source,java]
+----
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:opacity="opaque">
+    
+    <item android:drawable="@color/colorPrimary"/>
+
+    <item android:width="100dp" android:height="100dp" android:gravity="center">
+        <bitmap
+            android:src="@drawable/logo"
+            />
+    </item>
+    
+</layer-list>
+----
+
+==== Menambahkan theme Splash ke SplashActivity
+
+Buka file AndroidManifest.xml lalu tambahkan atribut theme ke tag `<activity>` milik SplashActivity. 
+
+----
+<activity android:name=".SplashActivity" android:theme="@style/AppTheme.Splash">
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+
+        <category android:name="android.intent.category.LAUNCHER" />
+    </intent-filter>
+</activity>
+----
+
+==== Redirect ke MainActivity
+
+Buka SplashActivity lalu modifikasi method `onCreate`.
+
+[source,java]
+----
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+  super.onCreate(savedInstanceState);
+  setContentView(R.layout.activity_splash);
+
+  Intent intent = new Intent(this, MainActivity.class);
+  startActivity(intent);
+  finish();
+}
+----
+
+Di sini, begitu masuk ke dalam SplashActivity, kita akan langsung berpindah ke MainActivity. 
+
+Run aplikasi untuk melihat hasilnya.

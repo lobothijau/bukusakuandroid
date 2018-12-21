@@ -446,6 +446,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#truemembuat-recyclerview-sederhana">Membuat RecyclerView sederhana</a></li>
 </ul>
 </li>
+<li><a href="#trueintent">Intent</a>
+<ul class="sectlevel2">
+<li><a href="#truemembuat-splash-screen">Membuat Splash Screen</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -1381,11 +1386,181 @@ recyclerView.setLayoutManager(new LinearLayoutManager(this));</code></pre>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="trueintent"><a class="anchor" href="#trueintent"></a>Intent</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Intent adalah suatu mekanisme di dalam sistem Android untuk melakukan perpindahan antar Activity. Perpindahan tersebut bisa dilakukan dari dalam aplikasi yang sama (explicit intent) maupun dari aplikasi yang berbeda (implicit intent).</p>
+</div>
+<div class="sect2">
+<h3 id="truemembuat-splash-screen"><a class="anchor" href="#truemembuat-splash-screen"></a>Membuat Splash Screen</h3>
+<div class="paragraph">
+<p>Unduh logo untuk splash screen <a href="https://bit.ly/2GBwK17">di sini</a> atau kamu bisa menggunakan logo sendiri. Simpan logo tadi di folder drawable.</p>
+</div>
+<div class="paragraph">
+<p>Selanjutnya buatlah sebuah file Java baru, beri nama SplashActivity dan isikan menjadi:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">public class SplashActivity extends AppCompatActivity {
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Karena Activity ini kita buat secara manual, maka kita juga perlu mendaftarkannya secara manual di AndroidManifest.xml.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">&lt;activity
+    android:name=".MainActivity"
+    android:label="@string/app_name"
+    android:theme="@style/AppTheme.NoActionBar"&gt;
+&lt;/activity&gt;
+&lt;activity android:name=".SplashActivity"&gt;
+&lt;/activity&gt;</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="truemengubah-activity-launcher"><a class="anchor" href="#truemengubah-activity-launcher"></a>Mengubah Activity Launcher</h4>
+<div class="paragraph">
+<p><em>By default</em>, setiap aplikasi Android baru akan membuat MainActivity sebagai launcher (kecuali jika namanya diganti saat awal membuat <em>project</em>). Karena sebuah splash screen akan selalu tampil pertama sebelum Activity yang lain, maka kita harus mengubah SplashActivity sebagai launcher.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="id.droidindonesia.intent"&gt;
+
+    &lt;application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"&gt;
+        &lt;activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"&gt;
+        &lt;/activity&gt;
+        &lt;activity android:name=".SplashActivity"&gt;
+            <i class="conum" data-value="1"></i><b>(1)</b>
+            &lt;intent-filter&gt;
+                &lt;action android:name="android.intent.action.MAIN" /&gt;
+
+                &lt;category android:name="android.intent.category.LAUNCHER" /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/activity&gt;
+    &lt;/application&gt;
+
+&lt;/manifest&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Pindahkan blok &lt;intent-filter&gt; dari MainActivity ke Splash Activity.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="truemembuat-layout-splash-screen"><a class="anchor" href="#truemembuat-layout-splash-screen"></a>Membuat layout splash screen</h4>
+<div class="paragraph">
+<p>Saat aplikasi pertama kali dijalankan, ada sedikit delay sebelum Activity launcher sukses memanggil <code>onCreate</code>. Saat delay ini terjadi (meskipun hanya beberapa milisecond, namun tetap terlihat mata), biasanya Android akan menampilkan <code>windowBackground</code> yang umumnya berwarna putih atau hitam. Atribut <code>windowBackground</code> ini, bisa diganti dengan sebuah drawable sebagai layar splash screen.</p>
+</div>
+<div class="paragraph">
+<p>Buka file <strong>res/values/styles.xml</strong> lalu tambahkan deklarasi theme baerikut:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">&lt;resources&gt;
+
+    // ... deklarasi theme lain disembunyikan
+
+    &lt;style name="AppTheme.Splash" parent="AppTheme.NoActionBar"&gt;
+        &lt;item name="android:windowBackground"&gt;@drawable/launch_screen&lt;/item&gt;
+        &lt;item name="colorPrimaryDark"&gt;@color/colorPrimaryDark&lt;/item&gt;
+    &lt;/style&gt;
+&lt;/resources&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Kita belum memiliki file <code>launch_screen</code>. Buat file ini di dalam folder drawable, lalu isikan dengan:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:opacity="opaque"&gt;
+
+    &lt;item android:drawable="@color/colorPrimary"/&gt;
+
+    &lt;item android:width="100dp" android:height="100dp" android:gravity="center"&gt;
+        &lt;bitmap
+            android:src="@drawable/logo"
+            /&gt;
+    &lt;/item&gt;
+
+&lt;/layer-list&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="truemenambahkan-theme-splash-ke-splashactivity"><a class="anchor" href="#truemenambahkan-theme-splash-ke-splashactivity"></a>Menambahkan theme Splash ke SplashActivity</h4>
+<div class="paragraph">
+<p>Buka file AndroidManifest.xml lalu tambahkan atribut theme ke tag <code>&lt;activity&gt;</code> milik SplashActivity.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;activity android:name=".SplashActivity" android:theme="@style/AppTheme.Splash"&gt;
+    &lt;intent-filter&gt;
+        &lt;action android:name="android.intent.action.MAIN" /&gt;
+
+        &lt;category android:name="android.intent.category.LAUNCHER" /&gt;
+    &lt;/intent-filter&gt;
+&lt;/activity&gt;</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="trueredirect-ke-mainactivity"><a class="anchor" href="#trueredirect-ke-mainactivity"></a>Redirect ke MainActivity</h4>
+<div class="paragraph">
+<p>Buka SplashActivity lalu modifikasi method <code>onCreate</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">@Override
+protected void onCreate(Bundle savedInstanceState) {
+  super.onCreate(savedInstanceState);
+  setContentView(R.layout.activity_splash);
+
+  Intent intent = new Intent(this, MainActivity.class);
+  startActivity(intent);
+  finish();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Di sini, begitu masuk ke dalam SplashActivity, kita akan langsung berpindah ke MainActivity.</p>
+</div>
+<div class="paragraph">
+<p>Run aplikasi untuk melihat hasilnya.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1<br>
-Last updated 2018-12-18 20:39:15 SEAST
+Last updated 2018-12-22 00:04:10 SEAST
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/github.min.css">
