@@ -1,5 +1,7 @@
 Intent adalah suatu mekanisme di dalam sistem Android untuk melakukan perpindahan antar Activity. Perpindahan tersebut bisa dilakukan dari dalam aplikasi yang sama (explicit intent) maupun dari aplikasi yang berbeda (implicit intent). 
 
+Membuat splash screen menjadi materi yang perlu diikuti langkah per langkah. Materi intent yang lain langsung memberikan potongan kodenya saja karena relatif lebih sederhana. 
+
 === Membuat Splash Screen
 
 Unduh logo untuk splash screen https://bit.ly/2GBwK17[di sini] atau kamu bisa menggunakan logo sendiri. Simpan logo tadi di folder drawable.  
@@ -140,3 +142,23 @@ protected void onCreate(Bundle savedInstanceState) {
 Di sini, begitu masuk ke dalam SplashActivity, kita akan langsung berpindah ke MainActivity. 
 
 Run aplikasi untuk melihat hasilnya.
+
+=== Membuka Navigation dengan Tujuan
+
+Untuk mengakses aplikasi Navigation dengan disertai tujuan bisa kita lakukan dengan:
+
+[source,java]
+----
+Uri gmmIntentUri = Uri.parse("google.navigation:q=-6.902459,107.61873"); // <1>
+Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+mapIntent.setPackage("com.google.android.apps.maps");
+startActivity(mapIntent);
+----
+
+<1> Jika tidak mengetahui latitude atau longitudenya, bisa juga dengan menggunakan nama tempat:
+
+[source,java]
+----
+Uri gmmIntentUri = Uri.parse("google.navigation:q=Monas,Jakarta+Indonesia");
+----
+
